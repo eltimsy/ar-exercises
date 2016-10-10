@@ -16,12 +16,14 @@ class Employee < ActiveRecord::Base
   validates_inclusion_of :hourly_rate, in: 40..200
   validates :store_id, presence: true
 end
+
 class Store < ActiveRecord::Base
   validate :must_contain_cloths, on: :create
 
   def must_contain_cloths
-    if mens_apparel.present? == false && womens_apparel.present? == false
+    if mens_apparel.blank? && womens_apparel.blank?
       errors.add(:mens_apparel, "You need to have some cloths")
+      errors.add(:womens_apparel, "You need to have some cloths")
     end
   end
 
